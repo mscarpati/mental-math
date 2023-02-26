@@ -12,12 +12,6 @@ import time
 import sys
 import datetime as dt
 
-# fix timer
-# fix functions for different operators
-# fix numbers so problems are nicer
-# add levels
-# refactor code - i.e. allow user to quit with '$', use try/except for input, make functions better, create different classes?
-
 class MentalMath():
     def __init__(self):
         """
@@ -44,6 +38,12 @@ class MentalMath():
                 self.Easy()
                 numQ-=1
             end = time.time()
+        elif level == '2':
+            start = time.time()
+            while numQ > 0:
+                self.Medium()
+                numQ-=1
+            end = time.time()
     
         scores = self.GetWeightedScore(self.score, tempQ, round(end-start), int(level))
         print("Time:", round(end-start, 2), "seconds")
@@ -55,7 +55,10 @@ class MentalMath():
         if level == 1:
             stdTime = numQ * 2.4
             stdScore = numQ * stdTime
-            weightedScore = round((1-(((numCorrect*time)-stdScore)/stdScore))*100, 2)
+            #weightedScore = round((1-(((numCorrect*time)-stdScore)/stdScore))*100, 2)
+            weightedScore2 = round(numCorrect/numQ*100 - (time-stdTime)/stdTime*100, 2)
+        elif level == 2:
+            stdTime = numQ * 3.6
             weightedScore2 = round(numCorrect/numQ*100 - (time-stdTime)/stdTime*100, 2)
         
         return [weightedScore2, stdTime]
@@ -82,13 +85,13 @@ class MentalMath():
         return answer
 
     def Addition(self, upperBound):
-        num1 = random.randint(1, upperBound)
-        num2 = random.randint(1, upperBound)
+        num1 = random.randint(2, upperBound)
+        num2 = random.randint(2, upperBound)
         print(num1, "+", num2)
         return num1+num2
 
     def Subtraction(self, upperBound):
-        num1 = random.randint(1, upperBound)
+        num1 = random.randint(2, upperBound)
         num2 = random.randint(num1, upperBound)
         print(num2, "-", num1)
         return num2-num1
@@ -112,6 +115,12 @@ class MentalMath():
             print(num3, "/", num2)
             return num3/num2
    
+    def Power(self, upperBound, expBound):
+        num1 = random.randint(2, upperBound)
+        num2 = random.randint(2, expBound)
+        print(num1, "^", num2)
+        return num1**num2
+    
     def Easy(self):
         operator = random.randint(0, 5)
 
@@ -136,7 +145,28 @@ class MentalMath():
             if trueAns == ans: self.score+=1
 
     
-    #def Medium(self):
+    def Medium(self):
+        operator = random.randint(0,4)
+        if operator == 0:
+            trueAns = self.Addition(499)
+            ans = self.GetAns()
+            if trueAns == ans: self.score+=1
+        elif operator == 1:
+            trueAns = self.Subtraction(499)
+            ans = self.GetAns()
+            if trueAns == ans: self.score+=1
+        elif operator == 2:
+            trueAns = self.Multiplication(499)
+            ans = self.GetAns()
+            if trueAns == ans: self.score+=1
+        elif operator == 3:
+            trueAns = self.Division(199)
+            ans = self.GetAns()
+            if trueAns == ans: self.score+=1
+        elif operator == 4:
+            trueAns = self.Power(29, 4)
+            ans = self.GetAns()
+            if trueAns == ans: self.score+=1
     
     #def Hard(self):
 
